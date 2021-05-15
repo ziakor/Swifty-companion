@@ -17,10 +17,10 @@ class Repository {
     final List<Skill> skills = [];
     dynamic cursus;
 
-    print(user);
     if (user != null) {
       cursus = user["cursus_users"][0];
-      for (var elem in user["cursus_users"]) {
+      if (cursus == null) return null;
+      for (final elem in user["cursus_users"]) {
         if (elem["cursus"]["name"] == "42cursus") cursus = elem;
       }
 

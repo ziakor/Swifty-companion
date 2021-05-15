@@ -9,9 +9,10 @@ class OauthService {
   static const secret =
       "503cc6a71a323a44b73022e82b74be0840dcba0e2cf0b7380ace2761df6a26c1";
   static const baseUrl42 = "https://api.intra.42.fr";
-  Map token = {"value": "", "expires_in": 0};
-  Future<Map> getToken() async {
-    if (token["expires_in"] == 0) {
+  String token = "";
+
+  Future<String> getToken() async {
+    if (await checkToken(token) == false) {
       try {
         final response = await http.post(Uri.parse("$baseUrl42/oauth/token"),
             body: {
@@ -21,28 +22,36 @@ class OauthService {
             });
         if (response.statusCode == 200) {
           final jsonResponse = jsonDecode(response.body);
-          token = {
-            "value": jsonResponse["access_token"],
-            "expires_in": jsonResponse["expires_in"],
-          };
+          token = jsonResponse["access_token"] as String;
         } else {
-          print("errorElse");
           getToken();
         }
       } catch (e) {
-        print(e);
         getToken();
       }
     }
     return token;
   }
 
+  Future<bool> checkToken(String token) async {
+    try {
+      final response = await http.get(Uri.parse("$baseUrl42/oauth/token/info"),
+          headers: {"Authorization": "Bearer $token"});
+      print(json.decode(response.body));
+      if (response.statusCode == 200) return true;
+      return false;
+    } catch (e) {
+      print("errorcheck : $e");
+    }
+    return false;
+  }
+
   Future<dynamic> fetchUser(String username) async {
     await getToken();
     try {
       final response = await http.get(
-          Uri.parse("${baseUrl42}/v2/users/$username"),
-          headers: {"Authorization": "Bearer ${token["value"]}"});
+          Uri.parse("$baseUrl42/v2/users/$username"),
+          headers: {"Authorization": "Bearer ${token}"});
       if (response.statusCode == 200) return json.decode(response.body);
     } catch (e) {
       print(e);

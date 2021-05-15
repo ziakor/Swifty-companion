@@ -243,8 +243,7 @@ class ProfilePage extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(
-                        height: 219,
+                      Expanded(
                         child: ListView.separated(
                           shrinkWrap: true,
                           itemCount: user.projects.length,
@@ -337,8 +336,7 @@ class ProfilePage extends StatelessWidget {
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(
-                          height: 14,
+                        Expanded(
                           child: ListView.separated(
                             shrinkWrap: true,
                             itemCount: user.skills.length,
