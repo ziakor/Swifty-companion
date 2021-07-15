@@ -5,9 +5,8 @@ import 'package:http/http.dart' as http;
 
 class OauthService {
   static const String uid =
-      "6114ffe6e86f68d7df4493793b077457c521a4b57bc93351a71f3daa7a286e2a";
-  static const secret =
-      "503cc6a71a323a44b73022e82b74be0840dcba0e2cf0b7380ace2761df6a26c1";
+      "API_42_UID_APP";
+  static const secret = "API_42_SECRET";
   static const baseUrl42 = "https://api.intra.42.fr";
   String token = "";
 
